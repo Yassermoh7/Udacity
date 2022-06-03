@@ -1,0 +1,52 @@
+                                          How much revenue did each genre generate?
+
+SELECT g.name,
+       SUM(il.UnitPrice)
+FROM Genre g
+JOIN track t ON t.GenreId = g.GenreId
+JOIN InvoiceLine il ON il.TrackId = t.TrackId
+GROUP BY 1
+ORDER BY 2 DESC
+
+
+                                         Which employee made the most sales?
+
+
+SELECT e.FirstName, e.LastName, count(c.supportrepid) sales_count
+FROM Employee e
+JOIN Customer c
+On c.SupportRepId = e.EmployeeId
+GROUP by 1
+ORDER by 3 DESC
+
+
+
+
+
+
+
+
+
+                                          How many songs length longer than the average song length based on playlists?
+
+SELECT p.Name playlist_name,
+       count(t.Milliseconds)
+FROM Track t
+JOIN PlaylistTrack plt ON plt.TrackId = t.TrackId
+JOIN Playlist p ON P.PlaylistId = plt.PlaylistId
+WHERE t.Milliseconds >
+    (SELECT AVG(t.Milliseconds)
+     FROM Track t)
+GROUP BY 1
+ORDER BY 2 DESC
+
+                                          Write a query that determines the customer that has spent the most on music for each country. Write a query that returns the country along with the top customer and how much they spent. For countries where the top amount spent is shared, provide all customers who spent this amount.
+
+SELECT DISTINCT (BillingCountry), Sum(total) TotalSpent,
+                                  c.FirstName,
+                                  c.LastName,
+                                  c.CustomerId
+FROM Invoice i
+JOIN Customer c ON i.CustomerId = c.CustomerId
+GROUP BY BillingCountry
+ORDER BY 1

@@ -1,0 +1,52 @@
+                                          How much revenue did each genre generate?
+
+SELECT g.name,
+       SUM(il.Quantity * il.UnitPrice) PricePerQuantity
+FROM Genre g
+JOIN track t ON t.GenreId = g.GenreId
+JOIN InvoiceLine il ON il.TrackId = t.TrackId
+GROUP BY 1
+ORDER BY 2 DESC
+
+
+                                         How many customers did each rep support ?
+
+
+SELECT e.FirstName, e.LastName, count(c.supportrepid) sales_count
+FROM Employee e
+JOIN Customer c
+On c.SupportRepId = e.EmployeeId
+GROUP by 1
+ORDER by 3 DESC
+
+
+
+
+
+
+
+
+
+                                          How many songs length longer than the average song length based on playlists?
+
+SELECT p.Name playlist_name,
+       Sum(t.Milliseconds) TimeInMilliseconds
+FROM Track t
+JOIN PlaylistTrack plt ON plt.TrackId = t.TrackId
+JOIN Playlist p ON P.PlaylistId = plt.PlaylistId
+WHERE t.Milliseconds >
+    (SELECT AVG(t.Milliseconds)
+     FROM Track t)
+GROUP BY 1
+ORDER BY 2 DESC
+
+
+                                          What is the most popular genre?
+
+
+SELECT Count(t.GenreID) CountOfGenre  ,g.Name
+From Track t
+JOIN Genre g
+ON t.GenreId = g.GenreId
+GROUP By 2
+ORDER by 1 DESC
